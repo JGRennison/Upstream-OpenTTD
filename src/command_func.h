@@ -25,7 +25,7 @@
  * Other functions just need to return this error if there is an error,
  * which doesn't need to specific by a StringID.
  */
-static const CommandCost CMD_ERROR = CommandCost(INVALID_STRING_ID);
+static constexpr CommandCost CMD_ERROR = CommandCost(INVALID_STRING_ID);
 
 void NetworkSendCommand(Commands cmd, StringID err_message, CommandCallback *callback, CompanyID company, const CommandDataBuffer &cmd_data);
 bool IsNetworkRegisteredCallback(CommandCallback *callback);
