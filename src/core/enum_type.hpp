@@ -259,4 +259,13 @@ public:
 	Container::const_reference operator[](const Index &pos) const { return this->Container::operator[](to_underlying(pos)); }
 };
 
+/**
+ * A typedef for EnumClassIndexContainer using std::array as the backing container type.
+ * @tparam T std::array value type.
+ * @tparam Index The enum class to use for indexing.
+ * @tparam N The std::array size.
+ */
+template <typename T, typename Index, Index N>
+using EnumIndexArray = EnumClassIndexContainer<std::array<T, to_underlying(N)>, Index>;
+
 #endif /* ENUM_TYPE_HPP */
