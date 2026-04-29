@@ -992,14 +992,19 @@ struct QueryStringWindow : public Window
 		}
 	}
 
+private:
+	/** Clear parent window station/waypoint viewport rect. */
+	void ClearViewportRect()
+	{
+		if (this->parent->window_class == WC_STATION_VIEW) SetViewportStationRect(Station::Get(this->parent->window_number), false);
+		if (this->parent->window_class == WC_WAYPOINT_VIEW) SetViewportWaypointRect(Waypoint::Get(this->parent->window_number), false);
+	}
+
+public:
 	void OnPlaceObjectAbort() override
 	{
-		if (Station::IsExpected(Station::Get(this->parent->window_number))) {
-			/* this is a station */
-			SetViewportStationRect(Station::Get(this->parent->window_number), false);
-		} else {
-			/* this is a waypoint */
-			SetViewportWaypointRect(Waypoint::Get(this->parent->window_number), false);
+		if (this->parent != nullptr) {
+			this->ClearViewportRect();
 		}
 
 		this->RaiseButtons();
@@ -1008,8 +1013,7 @@ struct QueryStringWindow : public Window
 	void Close([[maybe_unused]] int data = 0) override
 	{
 		if (this->parent != nullptr) {
-			if (this->parent->window_class == WC_STATION_VIEW) SetViewportStationRect(Station::Get(this->parent->window_number), false);
-			if (this->parent->window_class == WC_WAYPOINT_VIEW) SetViewportWaypointRect(Waypoint::Get(this->parent->window_number), false);
+			this->ClearViewportRect();
 
 			if (!this->editbox.handled) {
 				Window *parent = this->parent;
